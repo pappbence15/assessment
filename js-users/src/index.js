@@ -1,11 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import UsersTable from './routes/Users';
+import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import { StyledEngineProvider } from '@mui/material/styles';
 
 ReactDOM.render(
   <StyledEngineProvider injectFirst>
-    <App />
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<UsersTable/>} />
+          </Routes>
+      </BrowserRouter>
   </StyledEngineProvider>,
   document.getElementById('root')
 );
