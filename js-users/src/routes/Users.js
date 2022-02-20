@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useEffect, useState} from "react";
 import {Backdrop, CircularProgress, Pagination} from "@mui/material";
+import UserTableRow from "../components/UserTableRow";
 
 export default function UsersTable() {
     const [error, setError] = useState(null);
@@ -70,16 +71,7 @@ export default function UsersTable() {
                     </TableHead>
                     <TableBody>
                         {getUsersForOnePage().map((user) => (
-                            <TableRow
-                                key={user.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {user.first_name}
-                                </TableCell>
-                                <TableCell align="right">{user.last_name}</TableCell>
-                                <TableCell align="right">{user.created_at}</TableCell>
-                            </TableRow>
+                            <UserTableRow user={user} key={user.id} handleClick={handleClick}/>
                         ))}
                     </TableBody>
                 </Table>
@@ -93,5 +85,23 @@ export default function UsersTable() {
         const firstIndex = (page * pageLimit) - pageLimit;
 
         return users.slice(firstIndex, lastIndex + 1);
+    }
+
+    function handleClick(id, status){
+        const active = "active";
+        const locked = "locked";
+        updateStatus("/users/" + id, status === active ? locked : active)
+    }
+
+    function updateStatus(url, status){
+        fetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify({
+                "status": status,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
     }
 }
