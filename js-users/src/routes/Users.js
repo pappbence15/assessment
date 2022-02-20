@@ -67,6 +67,8 @@ export default function UsersTable() {
                             <TableCell>First name</TableCell>
                             <TableCell align="right">Last name</TableCell>
                             <TableCell align="right">Created at</TableCell>
+                            <TableCell align="right">Active/Locked</TableCell>
+                            <TableCell align="right">Edit</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

@@ -3,6 +3,8 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import createStyles from "@mui/styles/createStyles";
+import {Fab, Link, Switch} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function UserTableRow(props){
     const [status, setStatus] = useState(props.user.status);
@@ -19,7 +21,14 @@ export default function UserTableRow(props){
         </TableCell>
         <TableCell align="right" style={style}>{props.user.last_name}</TableCell>
         <TableCell align="right" style={style}>{props.user.created_at}</TableCell>
-        <TableCell align="right"><button onClick={handleClick}>ChangeStatus</button></TableCell>
+        <TableCell align="right">
+            <Switch checked={status !== "active"} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }}/>
+        </TableCell>
+        <TableCell align="right">
+            <Fab color="secondary" aria-label="edit" size={"small"} href={"/edit"}>
+                <EditIcon />
+            </Fab>
+        </TableCell>
     </TableRow>
     )
 
@@ -27,7 +36,7 @@ export default function UserTableRow(props){
         return status === "active" ? {textDecoration: "none"} : {textDecoration: "line-through"};
     }
 
-    function handleClick(){
+    function handleChange(){
         const active = "active";
         const locked = "locked";
         props.handleClick(props.user.id, status);
