@@ -25,7 +25,7 @@ export default function UserTableRow(props){
             <Switch checked={status !== "active"} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }}/>
         </TableCell>
         <TableCell align="right">
-            <Fab color="secondary" aria-label="edit" size={"small"} href={"/edit"}>
+            <Fab color="secondary" aria-label="edit" size={"small"} href={`/edit/${props.user.id}`}>
                 <EditIcon />
             </Fab>
         </TableCell>

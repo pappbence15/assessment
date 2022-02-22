@@ -14,7 +14,7 @@ ReactDOM.render(
           <Routes>
               <Route path="/" element={<UsersTable/>} />
               <Route path="/new" element={<AddNewUserForm/>}/>
-              <Route path="/edit" element={<EditUser/>}/>
+              <Route path="/edit/:userId" element={<EditUser />}/>
           </Routes>
       </BrowserRouter>
       </Container>
