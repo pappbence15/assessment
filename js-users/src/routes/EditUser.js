@@ -1,11 +1,27 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Backdrop, Button, CircularProgress, Grid, TextField} from "@mui/material";
+import {
+    Backdrop,
+    Button,
+    Card,
+    CardContent,
+    CircularProgress,
+    Container,
+    Grid,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import * as React from "react";
+import ErrorAlert from "../components/ErrorAlert";
+import SuccessAlert from "../components/SuccessAlert";
 
 export default function EditUser() {
     const {userId} = useParams();
+    const [errorMessage, setErrorMessage] = useState(null);
     const [error, setError] = useState(null);
+    const [isError, setIsError] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const [userFirstName, setUserFirstName] = useState("");
     const [userLastName, setUserLastName] = useState("");
@@ -42,33 +58,32 @@ export default function EditUser() {
         )
     } else {
         return (
-            <Grid container>
-                <Grid item>
-                    <TextField
-                        id="outlined"
-                        label="First name"
-                        defaultValue={userFirstName}
-                        onChange={(e)=>setUserFirstName(e.target.value)}
-                    />
+            <Container maxWidth="xs">
+                <Grid mt={10}>
+                <Card>
+                    <CardContent>
+                        <Stack spacing={4}>
+                            <Typography>Edit user</Typography>
+                            <TextField id="outlined-basic" label="First name" variant="outlined"
+                                       defaultValue={userFirstName}
+                                       onChange={(e)=>setUserFirstName(e.target.value)}/>
+                            <TextField id="outlined-basic" label="Last name" variant="outlined"
+                                       defaultValue={userLastName}
+                                       onChange={(e)=>setUserLastName(e.target.value)}/>
+                            <Button variant="contained" color="secondary" type={"submit"} onClick={handleSubmit}>
+                                Save
+                            </Button>
+                        </Stack>
+                        <ErrorAlert open={isError} close={setIsError} errorMessage={errorMessage}/>
+                        <SuccessAlert open={isSuccess} close={setIsSuccess}/>
+                    </CardContent>
+                </Card>
                 </Grid>
-                <Grid item>
-                    <TextField
-                        id="outlined"
-                        label="Last name"
-                        defaultValue={userLastName}
-                        onChange={(e)=>setUserLastName(e.target.value)}
-                    />
-                </Grid>
-                <Grid item>
-                    <Button variant="contained" color="success" type={"submit"} onClick={handleClick}>
-                        Change
-                    </Button>
-                </Grid>
-            </Grid>
+            </Container>
         )
     }
 
-    function handleClick() {
+    function handleSubmit() {
         fetch(`/users/${userId}`, {
             method: 'PUT',
             body: JSON.stringify({
@@ -79,6 +94,18 @@ export default function EditUser() {
                 'Content-type': 'application/json; charset=UTF-8',
             },
         })
-            .then(res=>res.json())
+            .then((response)=>checkError(response))
+            .catch((error) => {
+                setErrorMessage(error.toString());
+                setIsError(true);
+            })
+    }
+
+    function checkError(response){
+        if(response.status >= 200 && response.status <= 299){
+            setIsSuccess(true);
+        } else {
+            throw Error(response.statusText);
+        }
     }
 }
