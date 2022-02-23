@@ -5,11 +5,16 @@ import AddNewUserForm from "./routes/AddNewUser";
 import EditUser from "./routes/EditUser";
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import { StyledEngineProvider } from '@mui/material/styles';
-import {Container} from "@mui/material";
+import {Container, ThemeProvider, CssBaseline} from "@mui/material";
+import Header from "./components/Header";
+import {lightTheme} from "./themeProvider";
 
 ReactDOM.render(
   <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={lightTheme}>
+          <CssBaseline/>
       <Container maxWidth={"lg"}>
+          <Header/>
       <BrowserRouter>
           <Routes>
               <Route path="/" element={<UsersTable/>} />
@@ -18,6 +23,7 @@ ReactDOM.render(
           </Routes>
       </BrowserRouter>
       </Container>
+      </ThemeProvider>
   </StyledEngineProvider>,
   document.getElementById('root')
 );
