@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import createStyles from "@mui/styles/createStyles";
-import {Fab, Link, Switch} from "@mui/material";
+import {Fab, Switch} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function UserTableRow(props){
@@ -19,12 +19,12 @@ export default function UserTableRow(props){
         <TableCell component="th" scope="row" style={style}>
             {props.user.first_name}
         </TableCell>
-        <TableCell align="right" style={style}>{props.user.last_name}</TableCell>
-        <TableCell align="right" style={style}>{props.user.created_at}</TableCell>
-        <TableCell align="right">
+        <TableCell align="left" style={style}>{props.user.last_name}</TableCell>
+        <TableCell align="left" style={style}>{props.user.created_at}</TableCell>
+        <TableCell align="left">
             <Switch checked={status !== "active"} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }}/>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="left">
             <Fab color="secondary" aria-label="edit" size={"small"} href={`/edit/${props.user.id}`}>
                 <EditIcon />
             </Fab>

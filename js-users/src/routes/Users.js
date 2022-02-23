@@ -7,8 +7,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useEffect, useState} from "react";
-import {Backdrop, CircularProgress, Pagination} from "@mui/material";
+import {
+    Backdrop,
+    CircularProgress, Divider,
+    Pagination,
+    TableFooter
+} from "@mui/material";
 import UserTableRow from "../components/UserTableRow";
+import createStyles from "@mui/styles/createStyles";
 
 export default function UsersTable() {
     const [error, setError] = useState(null);
@@ -20,6 +26,8 @@ export default function UsersTable() {
 
     const pageLimit = 10;
 
+    const tableHeaderFontStyle = createStyles({fontWeight: "bold"})
+
     function handleChange(event, value){
         setPage(value);
     }
@@ -30,6 +38,7 @@ export default function UsersTable() {
             .then(res => res.json())
             .then(
                 (result) => {
+                    //Timeout is for backdrop display
                     setTimeout(()=>{
                         setIsLoaded(true);
                         setUsers(result);
@@ -61,14 +70,14 @@ export default function UsersTable() {
         return (
             <div>
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <Table sx={{ minWidth: 650 }} aria-label="caption table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>First name</TableCell>
-                            <TableCell align="right">Last name</TableCell>
-                            <TableCell align="right">Created at</TableCell>
-                            <TableCell align="right">Active/Locked</TableCell>
-                            <TableCell align="right">Edit</TableCell>
+                            <TableCell style={tableHeaderFontStyle}>First name</TableCell>
+                            <TableCell align="left" style={tableHeaderFontStyle}>Last name</TableCell>
+                            <TableCell align="left" style={tableHeaderFontStyle}>Created at</TableCell>
+                            <TableCell align="left" style={tableHeaderFontStyle}>Active/Locked</TableCell>
+                            <TableCell align="left" style={tableHeaderFontStyle}>Edit</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -76,9 +85,12 @@ export default function UsersTable() {
                             <UserTableRow user={user} key={user.id} handleClick={handleClick}/>
                         ))}
                     </TableBody>
+                    <TableFooter>
+                    </TableFooter>
                 </Table>
+                <Divider />
+                <Pagination count={paginationCount} onChange={handleChange} size={"large"}/>
             </TableContainer>
-                <Pagination count={paginationCount} onChange={handleChange} />
             </div>
         );
     }
